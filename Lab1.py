@@ -1,7 +1,6 @@
-#10.Pеалізувати алгоритм двовимірного обертання одиничного квадрата та одиничного рівносторонього трикутника навколо довільної точки.
-
 import turtle
 import math
+import time
 
 def rotate_point(x, y, cx, cy, angle):
     radians = math.radians(angle)
@@ -16,7 +15,6 @@ def rotate_point(x, y, cx, cy, angle):
     new_y = rotated_y + cy
     return new_x, new_y
 
-
 def draw_square(t, cx, cy, size):
     points = [
         (-size / 2, -size / 2),
@@ -25,14 +23,13 @@ def draw_square(t, cx, cy, size):
         (-size / 2, size / 2)
     ]
 
-    points = [(x+cx,y+cy) for x, y in points]
+    points = [(x+cx, y+cy) for x, y in points]
     
     t.penup()
     t.goto(points[-1][0], points[-1][1])
     t.pendown()
     for x, y in points:
-        t.goto(x, y )
-
+        t.goto(x, y)
 
 def draw_triangle(t, cx, cy, size):
     height = math.sqrt(3) / 2 * size
@@ -42,14 +39,13 @@ def draw_triangle(t, cx, cy, size):
         (0, 2 * height / 3)
     ]
     
-    points = [(x+cx,y+cy) for x, y in points]
+    points = [(x+cx, y+cy) for x, y in points]
 
     t.penup()
     t.goto(points[-1][0], points[-1][1])
     t.pendown()
     for x, y in points:
         t.goto(x, y)
-
 
 def draw_rotated_square(t, cx, cy, ref_x, ref_y, size, angle):    
     points = [
@@ -59,7 +55,7 @@ def draw_rotated_square(t, cx, cy, ref_x, ref_y, size, angle):
         (-size / 2, size / 2)
     ]
     
-    points = [(x+cx,y+cy) for x, y in points]
+    points = [(x+cx, y+cy) for x, y in points]
 
     rotated_points = [rotate_point(x, y, ref_x, ref_y, angle) for x, y in points]
     
@@ -69,8 +65,6 @@ def draw_rotated_square(t, cx, cy, ref_x, ref_y, size, angle):
     t.pencolor("red")
     for point in rotated_points:
         t.goto(point)
-    t.pencolor("black")
-
 
 def draw_rotated_triangle(t, cx, cy, ref_x, ref_y, size, angle):
     height = math.sqrt(3) / 2 * size
@@ -79,7 +73,7 @@ def draw_rotated_triangle(t, cx, cy, ref_x, ref_y, size, angle):
         (size / 2, -height / 3),
         (0, 2 * height / 3)
     ]    
-    points = [(x+cx,y+cy) for x, y in points]
+    points = [(x+cx, y+cy) for x, y in points]
 
     rotated_points = [rotate_point(x, y, ref_x, ref_y, angle) for x, y in points]
    
@@ -94,31 +88,29 @@ def draw_rotated_triangle(t, cx, cy, ref_x, ref_y, size, angle):
 screen = turtle.Screen()
 screen.setup(width=800, height=600)
 t = turtle.Turtle()
-t.speed(3)
-
+r = turtle.Turtle()
+r.speed(0)
+r.hideturtle()
 
 center_x, center_y = 50, 0
-
 rot_x, rot_y = 50, 100
-
 size = 100
-angle = 90
-
+endAngle = 45
 t.penup()
 t.goto(center_x, center_y)
 t.dot(5, "black")
-
-draw_square(t, center_x, center_y, size)
-draw_triangle(t, center_x, center_y, size)
-
 
 t.penup()
 t.goto(rot_x, rot_y)
 t.dot(5, "red")
 
+draw_square(t, center_x, center_y, size)
+draw_triangle(t, center_x, center_y, size)
 
-draw_rotated_square(t,center_x,center_y, rot_x, rot_y, size, angle)
-draw_rotated_triangle(t, center_x, center_y, rot_x, rot_y, size, angle)
-
+for angle in range(0, endAngle+1):
+    draw_rotated_square(r, center_x, center_y, rot_x, rot_y, size, angle)
+    draw_rotated_triangle(r, center_x, center_y, rot_x, rot_y, size, angle)
+    if angle != endAngle:
+        r.clear()
 
 turtle.done()
